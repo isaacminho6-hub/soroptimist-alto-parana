@@ -1,0 +1,71 @@
+{
+  "year": 2025,
+  "kpis": {
+    "socias": 52,
+    "eventos": 18,
+    "beneficiadas": 410
+  },
+  "revistas": [
+    {
+      "titulo": "Edición 2025 · Gala & Metas",
+      "url": "assets/revista-demo.pdf"
+    },
+    {
+      "titulo": "Edición 2024 · Proyectos",
+      "url": "assets/revista-demo.pdf"
+    },
+    {
+      "titulo": "Edición 2023 · Informe",
+      "url": "assets/revista-demo.pdf"
+    }
+  ],
+  "eventos": [
+    {
+      "titulo": "Cena de Gala (Casino Acaray)",
+      "fecha": "2025-10-05",
+      "lugar": "CDE"
+    },
+    {
+      "titulo": "Taller de Liderazgo Femenino",
+      "fecha": "2025-11-12",
+      "lugar": "CDE"
+    },
+    {
+      "titulo": "Entrega de Becas",
+      "fecha": "2025-12-01",
+      "lugar": "CDE"
+    }
+  ],
+  "metas": [
+    {
+      "titulo": "Becas entregadas",
+      "avance": 65
+    },
+    {
+      "titulo": "Nuevas socias 2025",
+      "avance": 40
+    },
+    {
+      "titulo": "Eventos benéficos",
+      "avance": 72
+    }
+  ],
+  "sponsors": [
+    {
+      "nombre": "Aliado Oro (demo)",
+      "link": "#"
+    },
+    {
+      "nombre": "Aliado Plata (demo)",
+      "link": "#"
+    },
+    {
+      "nombre": "Aliado Bronce (demo)",
+      "link": "#"
+    },
+    {
+      "nombre": "Amigo del Club (demo)",
+      "link": "#"
+    }
+  ]
+}

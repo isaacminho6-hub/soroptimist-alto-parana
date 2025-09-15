@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel Demo · Soroptimist Alto Paraná</title>
+  <meta name="description" content="Cargar revistas, eventos y metas (solo navegador)">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0033A0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{ --si-blue:#0033A0; --si-gold:#FFC72C; --si-navy:#0A0F1D; }
+    html,body{ font-family:"Manrope",system-ui,sans-serif; }
+    .grad{
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(255,199,44,.12), transparent 60%),
+        radial-gradient(900px 500px at 0% 100%, rgba(0,51,160,.18), transparent 60%),
+        linear-gradient(180deg, #0b1220 0%, var(--si-navy) 100%);
+    }
+    .brand{ position:sticky; top:0; z-index:50; background: linear-gradient(135deg, var(--si-blue), #2957cc); box-shadow: inset 0 -1px 0 rgba(255,255,255,.08); }
+    .btn{ padding:.55rem 1rem; border-radius:.6rem; font-weight:700; transition: all .15s ease; display:inline-block; }
+    .btn-gold{ background: linear-gradient(135deg, var(--si-gold), #ffd95e); color:#1a1a1a; box-shadow:0 8px 20px rgba(255,199,44,.25); }
+    .btn-ghost{ background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18); }
+    .btn-ghost:hover{ background: rgba(255,255,255,.10); }
+    .card{ background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+    .section-title{ font-weight:700; background: linear-gradient(90deg, #fff, #dfe9ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .frame{ border-radius:18px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.35); }
+    .lightbox{ position:fixed; inset:0; background:rgba(0,0,0,.9); display:none; align-items:center; justify-content:center; }
+    .lightbox img{ max-width:90vw; max-height:85vh; border-radius:12px; }
+  </style>
+  <script defer src="script.js"></script>
+</head>
+<body class="grad text-white min-h-screen">
+<header class="brand">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="assets/logo-si-ap.png" class="w-10 h-10 rounded-full ring-2 ring-white/30" alt="Logo">
+      <div>
+        <h1 class="text-lg font-semibold">Soroptimist Internacional</h1>
+        <p class="text-xs text-white/80">Club Alto Paraná · CDE, Paraguay</p>
+      </div>
+    </a>
+    <nav class="hidden md:flex items-center gap-6 text-sm">
+      <a class="hover:underline" href="index.html">Inicio</a>
+      <a class="hover:underline" href="revista.html">Revista</a>
+      <a class="hover:underline" href="eventos.html">Eventos</a>
+      <a class="hover:underline" href="metas.html">Metas</a>
+      <a class="hover:underline" href="sponsors.html">Aliados</a>
+      <a class="hover:underline" href="galeria.html">Galería</a>
+      <a class="hover:underline" href="contacto.html">Contacto</a>
+      <a class="btn btn-gold" href="panel-demo.html">Panel (demo)</a>
+    </nav>
+    <button id="menuBtn" class="md:hidden px-3 py-2 border border-white/30 rounded">Menú</button>
+  </div>
+  <div id="mobileNav" class="md:hidden hidden px-4 pb-4 space-y-2">
+    <a class="block" href="index.html">Inicio</a><a class="block" href="revista.html">Revista</a><a class="block" href="eventos.html">Eventos</a><a class="block" href="metas.html">Metas</a><a class="block" href="sponsors.html">Aliados</a><a class="block" href="galeria.html">Galería</a><a class="block" href="contacto.html">Contacto</a><a class="block" href="panel-demo.html">Panel (demo)</a>
+  </div>
+</header>
+
+<section class="max-w-6xl mx-auto px-4 py-12">
+  <h2 class="text-3xl font-semibold">Panel administrativo (Demo)</h2>
+  <p class="text-white/70 mt-2">Los datos se guardan en <code>localStorage</code> y se combinan con <code>data.json</code>.</p>
+  <div class="grid md:grid-cols-3 gap-6 mt-8">
+    <div class="card p-4 rounded">
+      <h3 class="font-semibold">Nueva edición de revista</h3>
+      <input id="rev_title" class="w-full mt-2 px-3 py-2 rounded bg-white/10 border border-white/20" placeholder="Título">
+      <input id="rev_url" class="w-full mt-2 px-3 py-2 rounded bg-white/10 border border-white/20" placeholder="URL (usa assets/revista-demo.pdf para demo)">
+      <button class="mt-3 btn btn-gold" onclick="demoAddRevista()">Agregar</button>
+    </div>
+    <div class="card p-4 rounded">
+      <h3 class="font-semibold">Nuevo evento</h3>
+      <input id="ev_title" class="w-full mt-2 px-3 py-2 rounded bg-white/10 border border-white/20" placeholder="Título">
+      <input id="ev_date" type="date" class="w-full mt-2 px-3 py-2 rounded bg-white/10 border border-white/20">
+      <input id="ev_place" class="w-full mt-2 px-3 py-2 rounded bg-white/10 border border-white/20" placeholder="Lugar (ej. Casino Acaray)">
+      <button class="mt-3 btn btn-gold" onclick="demoAddEvento()">Agregar</button>
+    </div>
+    <div class="card p-4 rounded">
+      <h3 class="font-semibold">Metas</h3>
+      <input id="meta_title" class="w-full mt-2 px-3 py-2 rounded bg-white/10 border border-white/20" placeholder="Meta (ej. Becas entregadas)">
+      <input id="meta_pct" type="number" min="0" max="100" class="w-full mt-2 px-3 py-2 rounded bg-white/10 border border-white/20" placeholder="% avance">
+      <button class="mt-3 btn btn-gold" onclick="demoAddMeta()">Actualizar</button>
+    </div>
+  </div>
+</section>
+
+<footer class="mt-16 border-t border-white/10">
+  <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
+    <div>
+      <p class="text-white/80">Soroptimist Internacional · Club Alto Paraná</p>
+      <p class="text-white/60 text-sm">CDE, Paraguay · Fundado 2007</p>
+    </div>
+    <div class="text-sm">
+      <p class="text-white/70">Rápidos accesos</p>
+      <div class="mt-2 space-y-1">
+        <a class="block text-white/60 hover:text-white" href="revista.html">Revista digital</a>
+        <a class="block text-white/60 hover:text-white" href="eventos.html">Agenda de eventos</a>
+        <a class="block text-white/60 hover:text-white" href="metas.html">Metas del club</a>
+        <a class="block text-white/60 hover:text-white" href="sponsors.html">Aliados y sponsors</a>
+      </div>
+    </div>
+    <div class="text-sm">
+      <p class="text-white/70">Soporte</p>
+      <div class="mt-2 space-y-2">
+        <a class="btn btn-ghost" href="#" onclick="navigator.serviceWorker?.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())); alert('Cache limpiada'); return false;">Limpiar caché</a>
+      </div>
+    </div>
+  </div>
+  <div class="text-center text-xs text-white/50 pb-6">© 2025 Soroptimist Alto Paraná · Demo por VC Estudios</div>
+</footer>
+<script>
+  // mobile nav
+  document.getElementById('menuBtn')?.addEventListener('click',()=>{{document.getElementById('mobileNav')?.classList.toggle('hidden')}});
+  // PWA
+  if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('sw.js'); }}
+</script>
+</body>
+</html>

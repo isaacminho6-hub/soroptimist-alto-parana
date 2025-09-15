@@ -1,0 +1,15 @@
+{
+  "name": "Soroptimist Alto Paraná (Demo)",
+  "short_name": "SI-AP Demo",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0A0F1D",
+  "theme_color": "#0033A0",
+  "icons": [
+    {
+      "src": "assets/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Soroptimist Alto Paraná — Sitio Demo</title>
+
+  <!-- Rutas absolutas desde la raíz -->
+  <base href="/" />
+
+  <link rel="icon" href="/assets/logo-soroptimist.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root{
+      --azul:#24356B; --indigo:#2F4FA1; --magenta:#B23A64; --dorado:#F5B100;
+      --fondo:#0E1328; --card:#101835; --linea:rgba(255,255,255,.10);
+      --royal:#2F4FA1; --navy:#24356B;
+    }
+    html,body{ font-family: Inter, Manrope, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .brand-grad{ background: linear-gradient(135deg, var(--azul), var(--indigo)); }
+    .hero-grad{ background:
+      radial-gradient(800px 400px at 100% -10%, rgba(47,79,161,.35), transparent 60%),
+      radial-gradient(700px 380px at -10% 110%, rgba(178,58,100,.25), transparent 60%),
+      linear-gradient(180deg, #0B1022 0%, var(--fondo) 100%); }
+    .card{ background: var(--card); border:1px solid var(--linea); border-radius:1rem; }
+    .chip{ border:1px solid var(--linea); border-radius:999px; padding:.35rem .75rem; font-size:.8rem; color:#e7eaf6; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.6rem; font-weight:700; border-radius:.8rem; padding:.8rem 1.2rem; transition:transform .15s ease; }
+    .btn:hover{ transform:translateY(-2px); }
+    .btn-outline{ border:1px solid var(--linea); color:#fff; }
+    .btn-dorado{ background: var(--dorado); color:#2b1b00; }
+    .section-title{ font-weight:800; letter-spacing:-.02em; }
+    .anillo{ box-shadow:0 0 0 6px rgba(255,255,255,.06); }
+    .link{ color:#cfe0ff; } .link:hover{ text-decoration:underline; }
+
+    .grid-auto{ display:grid; grid-template-columns: repeat(1, 1fr); gap:1rem; }
+    @media (min-width:640px){ .grid-auto{ grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width:1024px){ .grid-auto{ grid-template-columns: repeat(3, 1fr); } }
+
+    .gal-item{ position:relative; overflow:hidden; border-radius:1rem; border:0; --ring:3px; z-index:0; }
+    .gal-item img{ width:100%; height:320px; object-fit:cover; display:block; transition:transform .25s ease; }
+    .gal-item:hover img{ transform:scale(1.03); }
+    .gal-cap{ position:absolute; left:0; right:0; bottom:0; padding:.6rem .9rem; font-size:.9rem; background:linear-gradient(180deg, transparent, rgba(0,0,0,.55)); }
+
+    .lightbox{ position:fixed; inset:0; background:rgba(0,0,0,.9); display:none; align-items:center; justify-content:center; z-index:80; }
+    .lightbox.open{ display:flex; }
+    .lightbox img{ max-width:92vw; max-height:88vh; border-radius:.8rem; }
+
+    /* Marcos elegantes animados */
+    .royal-frame{ position: relative; border-radius: 1.2rem; --ring:7px; z-index:0;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 10px 30px rgba(0,0,0,.35), 0 0 38px rgba(245,177,0,.16);}
+    .royal-mini{ position:relative; border-radius:1rem; overflow:hidden; --ring:3px; z-index:0; }
+    .royal-mini img{ display:block; width:100%; height:9rem; object-fit:cover; }
+    .royal-frame > *, .gal-item > *, .royal-mini > *{ position:relative; z-index:1; }
+    .royal-frame::before, .gal-item::before, .royal-mini::before{
+      --angle: 0turn; content:""; position:absolute; inset:0; padding:var(--ring); border-radius:inherit;
+      background: conic-gradient(from var(--angle), #ffe29a 0deg, var(--dorado) 60deg, #9db7ff 140deg, var(--royal) 220deg, #ffe29a 300deg, var(--dorado) 360deg);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      animation: royal-rotate 8s linear infinite; filter: saturate(1.05) brightness(1.02);
+      z-index:0; pointer-events:none;
+    }
+    .royal-frame::after, .gal-item::after, .royal-mini::after{
+      content:""; position:absolute; inset:-1px; border-radius:inherit;
+      background: linear-gradient(115deg, rgba(255,255,255,0) 42%, rgba(255,255,255,.45) 50%, rgba(255,255,255,0) 58%);
+      filter: blur(10px); mix-blend-mode: screen; animation: royal-sheen 4s ease-in-out infinite;
+      z-index:0; pointer-events:none;
+    }
+    @keyframes royal-rotate { to { --angle: 1turn; } }
+    @keyframes royal-sheen { 0%{transform:translate(-120%,-40%);opacity:.75}50%{transform:translate(0,0);opacity:1}100%{transform:translate(120%,40%);opacity:.75} }
+    @media (prefers-reduced-motion: reduce){
+      .royal-frame::before, .gal-item::before, .royal-mini::before,
+      .royal-frame::after,  .gal-item::after,  .royal-mini::after{ animation:none; }
+    }
+  </style>
+</head>
+
+<body class="text-white bg-[var(--fondo)]">
+  <!-- Franja magenta -->
+  <div class="w-full bg-[var(--magenta)] text-white text-sm">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="font-semibold">LO MEJOR PARA LAS MUJERES</span>
+        <span class="opacity-80 hidden md:inline">·</span><a class="opacity-90 hover:opacity-100" href="#destacados">Destacados</a>
+        <span class="opacity-80 hidden md:inline">·</span><a class="opacity-90 hover:opacity-100" href="#noticias">Noticias</a>
+        <span class="opacity-80 hidden md:inline">·</span><a class="opacity-90 hover:opacity-100" href="#eventos">Eventos</a>
+        <span class="opacity-80 hidden md:inline">·</span><a class="opacity-90 hover:opacity-100" href="/revista.html" target="_blank" rel="noopener">Revista</a>
+        <span class="opacity-80 hidden md:inline">·</span><a class="opacity-90 hover:opacity-100" href="#galeria">Galería</a>
+      </div>
+      <div><span class="chip">ES</span></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="brand-grad sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3">
+        <img src="/assets/logo-soroptimist.png" alt="Logo Soroptimist" class="w-10 h-10 bg-white p-1 rounded anillo" />
+        <div>
+          <p class="text-xs uppercase tracking-[.18em] opacity-80">Soroptimist International</p>
+          <h1 class="text-lg font-semibold">Club Alto Paraná</h1>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-6">
+        <a class="hover:underline" href="#trabajo">Nuestro trabajo</a>
+        <a class="hover:underline" href="#ayuda">Cómo ayudar</a>
+        <a class="hover:underline" href="#historias">Historias reales</a>
+        <a class="hover:underline" href="#nosotras">Sobre nosotras</a>
+        <a class="hover:underline" href="/revista.html" target="_blank" rel="noopener">Revista</a>
+        <a class="hover:underline" href="#socias">Para clubes y socias</a>
+        <a class="hover:underline" href="#blog">Blog</a>
+        <a class="btn btn-dorado" href="#donar">DONAR</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-grad">
+    <div class="max-w-7xl mx-auto px-4 py-14 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="chip">2025–2026</span><span class="chip">UpliftHER</span><span class="chip">Lo mejor para las mujeres</span>
+        </div>
+        <h2 class="section-title text-4xl md:text-5xl leading-tight">18 años de impacto local en Alto Paraná.</h2>
+        <p class="mt-4 text-white/80 max-w-xl">Educación, salud, liderazgo y defensa de derechos. Sumate a una red que transforma vidas.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a class="btn btn-outline" href="/revista.html" target="_blank" rel="noopener">Revista digital</a>
+          <a href="#destacados" class="btn btn-dorado">Ver destacados</a>
+        </div>
+        <div class="grid grid-cols-3 gap-6 mt-10">
+          <div class="card p-5 text-center"><p class="text-3xl font-extrabold" data-count="52">0</p><p class="text-sm opacity-80">Socias activas</p></div>
+          <div class="card p-5 text-center"><p class="text-3xl font-extrabold" data-count="18">0</p><p class="text-sm opacity-80">Eventos/año</p></div>
+          <div class="card p-5 text-center"><p class="text-3xl font-extrabold" data-count="410">0</p><p class="text-sm opacity-80">Beneficiadas</p></div>
+        </div>
+      </div>
+
+      <!-- Carrusel con marco royal -->
+      <div class="relative royal-frame">
+        <div class="overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-[0_10px_30px_rgba(0,0,0,.35)]">
+          <img id="heroImg" src="/assets/evento-18anios-1.jpg" alt="Aniversario 18 años — Soroptimist Alto Paraná" class="w-full h-[420px] object-cover" />
+        </div>
+        <div class="absolute inset-x-0 -bottom-4 flex justify-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-white/70" id="dot0"></span>
+          <span class="w-2 h-2 rounded-full bg-white/30" id="dot1"></span>
+          <span class="w-2 h-2 rounded-full bg-white/30" id="dot2"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMAS -->
+  <section id="trabajo" class="max-w-7xl mx-auto px-4 py-14">
+    <h3 class="section-title text-2xl mb-6">Programas e impacto</h3>
+    <div class="grid md:grid-cols-4 gap-6">
+      <article class="card overflow-hidden">
+        <div class="royal-mini"><img src="/assets/reunion-1.jpg" alt="Reuniones y mentorías" /></div>
+        <div class="p-5"><h4 class="font-bold mb-1">Mentorías y redes</h4><p class="text-sm text-white/80">Acompañamiento entre socias y nuevas lideresas.</p></div>
+      </article>
+      <article class="card overflow-hidden">
+        <div class="royal-mini"><img src="/assets/almuerzo-comunitario.jpg" alt="Almuerzo comunitario" /></div>
+        <div class="p-5"><h4 class="font-bold mb-1">Acción comunitaria</h4><p class="text-sm text-white/80">Apoyo directo a mujeres y familias.</p></div>
+      </article>
+      <article class="card overflow-hidden">
+        <div class="royal-mini"><img src="/assets/bolsitas-solidarias.jpg" alt="Entrega de kits solidarios" /></div>
+        <div class="p-5"><h4 class="font-bold mb-1">Solidaridad</h4><p class="text-sm text-white/80">Kits, donaciones y campañas locales.</p></div>
+      </article>
+      <article class="card overflow-hidden">
+        <div class="royal-mini"><img src="/assets/reunion-2.jpg" alt="Encuentros de trabajo" /></div>
+        <div class="p-5"><h4 class="font-bold mb-1">Formación</h4><p class="text-sm text-white/80">Talleres y conversatorios periódicos.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- DESTACADOS -->
+  <section id="destacados" class="max-w-7xl mx-auto px-4 py-10">
+    <div class="flex items-end justify-between mb-6">
+      <h3 class="section-title text-2xl">Destacados</h3>
+      <a class="link" href="/revista.html" target="_blank" rel="noopener">Ver revista</a>
+    </div>
+    <div class="grid md:grid-cols-4 gap-6">
+      <article class="card overflow-hidden">
+        <div class="royal-mini"><img src="/assets/evento-18anios-2.jpg" alt="Escenario aniversario 18 años" style="height:10rem" /></div>
+        <div class="p-5"><p class="text-xs opacity-70 mb-1">2025</p><a class="font-bold hover:underline" href="/revista.html" target="_blank" rel="noopener">Aniversario 18 años</a><p class="text-sm text-white/80 mt-1">Celebración y reconocimientos.</p></div>
+      </article>
+      <article class="card overflow-hidden">
+        <div class="royal-mini"><img src="/assets/evento-18anios-1.jpg" alt="Socias en aniversario" style="height:10rem" /></div>
+        <div class="p-5"><p class="text-xs opacity-70 mb-1">2025</p><a class="font-bold hover:underline" href="#galeria">Socias destacadas</a><p class="text-sm text-white/80 mt-1">Compromiso y trayectoria.</p></div>
+      </article>
+      <article class="card overflow-hidden">
+        <div class="royal-mini"><img src="/assets/tarde-chocolate.jpg" alt="Tarde de Chocolate" style="height:10rem" /></div>
+        <div class="p-5"><p class="text-xs opacity-70 mb-1">Tradicional</p><a class="font-bold hover:underline" href="#galeria">Tarde de Chocolate</a><p class="text-sm text-white/80 mt-1">Recaudación con la comunidad.</p></div>
+      </article>
+      <article class="card overflow-hidden">
+        <div class="royal-mini"><img src="/assets/bolsitas-solidarias.jpg" alt="Acción solidaria" style="height:10rem" /></div>
+        <div class="p-5"><p class="text-xs opacity-70 mb-1">Solidaridad</p><a class="font-bold hover:underline" href="#galeria">Kits y donaciones</a><p class="text-sm text-white/80 mt-1">Entregas a beneficiarias.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- NOTICIAS -->
+  <section id="noticias" class="max-w-7xl mx-auto px-4 py-10">
+    <div class="flex items-end justify-between mb-6">
+      <h3 class="section-title text-2xl">Noticias</h3>
+      <a class="link" href="/revista.html" target="_blank" rel="noopener">Ver revista</a>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <article class="card p-6"><h4 class="font-bold">Nueva gestión 2025–2026</h4><p class="text-sm text-white/80 mt-2">Metas, programas y calendario.</p><a class="link mt-3 inline-block" href="/revista.html" target="_blank" rel="noopener">Leer revista</a></article>
+      <article class="card p-6"><h4 class="font-bold">Alianzas locales</h4><p class="text-sm text-white/80 mt-2">Empresas y organismos aliados.</p><a class="link mt-3 inline-block" href="#galeria">Leer más</a></article>
+      <article class="card p-6"><h4 class="font-bold">Próximas campañas</h4><p class="text-sm text-white/80 mt-2">Salud, educación y liderazgo.</p><a class="link mt-3 inline-block" href="#galeria">Leer más</a></article>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section id="galeria" class="max-w-7xl mx-auto px-4 py-12">
+    <div class="flex items-end justify-between mb-6">
+      <h3 class="section-title text-2xl">Galería</h3>
+      <span class="text-white/70 text-sm">Fotos de actividades recientes</span>
+    </div>
+
+    <div class="grid-auto">
+      <a href="/assets/evento-18anios-1.jpg" class="gal-item" data-cap="Aniversario 18 años · socias">
+        <img loading="lazy" src="/assets/evento-18anios-1.jpg" alt="Aniversario 18 años — socias" />
+        <div class="gal-cap">Aniversario 18 años · socias</div>
+      </a>
+      <a href="/assets/evento-18anios-2.jpg" class="gal-item" data-cap="Aniversario 18 años · escenario">
+        <img loading="lazy" src="/assets/evento-18anios-2.jpg" alt="Escenario aniversario 18 años" />
+        <div class="gal-cap">Aniversario 18 años · escenario</div>
+      </a>
+      <a href="/assets/reunion-1.jpg" class="gal-item" data-cap="Reunión de trabajo">
+        <img loading="lazy" src="/assets/reunion-1.jpg" alt="Reunión de trabajo" />
+        <div class="gal-cap">Reunión de trabajo</div>
+      </a>
+      <a href="/assets/reunion-2.jpg" class="gal-item" data-cap="Encuentro de socias">
+        <img loading="lazy" src="/assets/reunion-2.jpg" alt="Encuentro de socias" />
+        <div class="gal-cap">Encuentro de socias</div>
+      </a>
+      <a href="/assets/almuerzo-comunitario.jpg" class="gal-item" data-cap="Almuerzo comunitario">
+        <img loading="lazy" src="/assets/almuerzo-comunitario.jpg" alt="Almuerzo comunitario" />
+        <div class="gal-cap">Almuerzo comunitario</div>
+      </a>
+      <a href="/assets/bolsitas-solidarias.jpg" class="gal-item" data-cap="Bolsitas solidarias">
+        <img loading="lazy" src="/assets/bolsitas-solidarias.jpg" alt="Bolsitas solidarias" />
+        <div class="gal-cap">Bolsitas solidarias</div>
+      </a>
+      <a href="/assets/tarde-chocolate.jpg" class="gal-item" data-cap="Tradicional Tarde de Chocolate">
+        <img loading="lazy" src="/assets/tarde-chocolate.jpg" alt="Tarde de Chocolate" />
+        <div class="gal-cap">Tradicional Tarde de Chocolate</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="donar" class="max-w-7xl mx-auto px-4 pb-14">
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col md:flex-row items-center md:justify-between gap-6">
+      <div>
+        <h3 class="section-title text-2xl">Sumate al club</h3>
+        <p class="text-white/80 text-sm max-w-xl">Ser parte de Soroptimist es impulsar oportunidades reales para mujeres y niñas de nuestra comunidad.</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="#" class="btn btn-outline">Unirme</a>
+        <a href="/revista.html" target="_blank" rel="noopener" class="btn btn-dorado">Ver revista</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="brand-grad">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-3 mb-3">
+          <img src="/assets/logo-soroptimist.png" class="w-9 h-9 bg-white p-1 rounded" alt="Logo" />
+          <strong>Club Alto Paraná</strong>
+        </div>
+        <p class="text-sm opacity-80">Ciudad del Este, Paraguay</p>
+        <p class="text-sm opacity-80">© 2025 Soroptimist — Sitio demo por VC Estudios</p>
+      </div>
+      <div>
+        <h5 class="font-semibold mb-3">Secciones</h5>
+        <ul class="space-y-2 text-sm opacity-90">
+          <li><a class="hover:underline" href="#trabajo">Nuestro trabajo</a></li>
+          <li><a class="hover:underline" href="#ayuda">Cómo ayudar</a></li>
+          <li><a class="hover:underline" href="/revista.html" target="_blank" rel="noopener">Revista</a></li>
+          <li><a class="hover:underline" href="#eventos">Eventos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-semibold mb-3">Recursos</h5>
+        <ul class="space-y-2 text-sm opacity-90">
+          <li><a class="hover:underline" href="#destacados">Destacados</a></li>
+          <li><a class="hover:underline" href="#noticias">Noticias</a></li>
+          <li><a class="hover:underline" href="#galeria">Fotos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-semibold mb-3">Contacto</h5>
+        <p class="text-sm opacity-90">soroptimist.altoparana@example.org</p>
+        <div class="flex gap-3 mt-3">
+          <a class="chip" href="#">Facebook</a>
+          <a class="chip" href="#">Instagram</a>
+          <a class="chip" href="#">YouTube</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: carrusel, contadores, lightbox -->
+  <script>
+    const imgs = ["/assets/evento-18anios-1.jpg","/assets/evento-18anios-2.jpg","/assets/reunion-1.jpg"];
+    let i = 0;
+    const hero = document.getElementById('heroImg');
+    const dots = [document.getElementById('dot0'), document.getElementById('dot1'), document.getElementById('dot2')];
+    setInterval(() => {
+      i = (i + 1) % imgs.length;
+      if(hero){ hero.src = imgs[i]; }
+      if(dots.length){ dots.forEach((d,idx)=>{ if(d) d.style.background = idx===i ? 'rgba(255,255,255,.9)' : 'rgba(255,255,255,.3)'; }); }
+    }, 4000);
+
+    const counters = document.querySelectorAll("[data-count]");
+    const inView = el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; };
+    function animateCounter(el){
+      const target = parseInt(el.getAttribute("data-count"),10);
+      let current = 0; const step = Math.max(1, Math.floor(target/60));
+      const iv = setInterval(()=>{ current += step; if(current >= target){ current = target; clearInterval(iv); }
+        el.textContent = current.toLocaleString('es-ES'); }, 16);
+    }
+    function onScroll(){ counters.forEach(el=>{ if(!el.dataset.done && inView(el)){ el.dataset.done="1"; animateCounter(el); } }); }
+    addEventListener('scroll', onScroll, { passive:true }); onScroll();
+
+    const lb = document.createElement('div'); lb.className = 'lightbox'; lb.innerHTML = '<img alt=""><button aria-label="Cerrar" style="position:fixed;top:16px;right:16px;background:#fff;color:#000;padding:.4rem .7rem;border-radius:.5rem;font-weight:700">×</button>';
+    document.body.appendChild(lb);
+    const lbImg = lb.querySelector('img'); const btn = lb.querySelector('button');
+    document.querySelectorAll('.gal-item').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault(); lbImg.src = a.getAttribute('href'); lb.classList.add('open');
+        lbImg.alt = a.dataset.cap || 'Foto';
+      });
+    });
+    btn.addEventListener('click', ()=> lb.classList.remove('open'));
+    lb.addEventListener('click', (e)=>{ if(e.target===lb) lb.classList.remove('open'); });
+    addEventListener('keydown', (e)=>{ if(e.key==='Escape') lb.classList.remove('open'); });
+
+    // Service Worker desactivado en dev
+    if ('serviceWorker' in navigator && false) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Revista · Soroptimist Alto Paraná</title>
+  <link rel="icon" href="/assets/logo-soroptimist.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{ --azul:#24356B; --indigo:#2F4FA1; --fondo:#0E1328; --linea:rgba(255,255,255,.1); --dorado:#F5B100; }
+    html,body{ font-family: Inter, Manrope, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:var(--fondo); color:#fff; }
+    .brand{ background: linear-gradient(135deg, var(--azul), var(--indigo)); border-bottom:1px solid var(--linea); }
+    .btn{ font-weight:700; border-radius:.65rem; padding:.6rem 1rem; }
+    .btn-dorado{ background:var(--dorado); color:#2b1b00; }
+    .btn-outline{ border:1px solid var(--linea); }
+  </style>
+</head>
+<body>
+  <!-- Barra superior -->
+  <header class="brand sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/index.html" class="btn btn-outline">← Volver</a>
+      <strong>Revista Soroptimist - Club Alto Paraná</strong>
+      <div class="flex gap-2">
+        <a id="dlBtn" class="btn btn-dorado" href="/revista/revista-soroptimist.pdf" download>Descargar PDF</a>
+        <button id="printBtn" class="btn btn-outline">Imprimir</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Visor -->
+  <main class="max-w-[1400px] mx-auto p-4">
+    <div class="rounded-xl border border-[var(--linea)] bg-[#0b1022] min-h-[70vh] overflow-hidden">
+      <div id="fallback" class="w-full h-[75vh] flex items-center justify-center text-center hidden">
+        <div>
+          <p class="mb-3 opacity-90">No se pudo mostrar el PDF.</p>
+          <a class="btn btn-dorado" href="/revista/revista-soroptimist.pdf" download>Descargar</a>
+        </div>
+      </div>
+      <iframe id="pdfFrame"
+              class="w-full h-[85vh] block"
+              title="Revista Soroptimist — PDF"
+              style="border:0; background:#0b1022"
+              src="">
+      </iframe>
+    </div>
+  </main>
+
+  <script>
+    // Ruta correcta según tu estructura (carpeta 'revista' en la raíz)
+    const PDF_URL = "/revista/revista-soroptimist.pdf";
+
+    const frame = document.getElementById("pdfFrame");
+    const fallback = document.getElementById("fallback");
+    const dlBtn = document.getElementById("dlBtn");
+
+    // Verifica que exista antes de embeber
+    fetch(PDF_URL, { method: "HEAD" })
+      .then(res => {
+        if (res.ok) {
+          frame.src = PDF_URL + "#toolbar=1&navpanes=0&view=FitH";
+          frame.addEventListener("error", () => { frame.classList.add("hidden"); fallback.classList.remove("hidden"); });
+        } else {
+          frame.classList.add("hidden");
+          fallback.classList.remove("hidden");
+        }
+      })
+      .catch(() => {
+        frame.classList.add("hidden");
+        fallback.classList.remove("hidden");
+      });
+
+    document.getElementById("printBtn").addEventListener("click", () => {
+      try { frame.contentWindow.focus(); frame.contentWindow.print(); }
+      catch { window.open(PDF_URL, "_blank"); }
+    });
+
+    dlBtn.href = PDF_URL;
+  </script>
+
+  <!-- SW solo en build -->
+  <script type="module">
+    if ('serviceWorker' in navigator && import.meta.env && import.meta.env.PROD) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</body>
+</html>

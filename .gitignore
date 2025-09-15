@@ -1,0 +1,17 @@
+
+# VS Code
+.vscode/
+
+# Builds temporales
+dist/
+build/
+
+# Vercel local
+.vercel/
+
+# SO
+.DS_Store
+Thumbs.db
+
+# Node (por si en el futuro agregás tooling)
+node_modules/
